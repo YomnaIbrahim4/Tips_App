@@ -4,6 +4,7 @@ import '../models/auth_repo.dart';
 part 'signup_event.dart';
 part 'signup_state.dart';
 
+String? currentUserName;
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final AuthRepo authRepo;
 
@@ -12,6 +13,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       emit(SignUpLoading());
       try {
         await authRepo.signUp(email: event.email, password: event.password);
+        currentUserName = event.name;
         emit(SignUpSuccess());
       } catch (e) {
         emit(SignUpFailure(e.toString()));

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sign_up/screens/profile_screen.dart';
+import 'package:sign_up/screens/sign_up_screen.dart';
 
 import 'firebase_options.dart';
 import 'models/auth_repo.dart';
@@ -26,9 +28,14 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => LoginBloc(authRepo)),
         BlocProvider(create: (_) => SignUpBloc(authRepo)),
       ],
-      child: const MaterialApp(
+      child:  MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: LoginScreenWithBloc(),
+        initialRoute: LoginScreenWithBloc.routeName,
+        routes: {
+          LoginScreenWithBloc.routeName: (context) => LoginScreenWithBloc(),
+          SignUpScreenWithBloc.routeName: (context) => SignUpScreenWithBloc(),
+          //ProfileScreen.routeName: (context) => ProfileScreen(),
+        },
       ),
     );
   }

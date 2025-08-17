@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sign_up/utils/app_strings.dart';
 import '../login_bloc/login_bloc.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/custom_text_field.dart';
 import 'home_screen.dart';
 import 'sign_up_screen.dart';
 
 class LoginScreenWithBloc extends StatefulWidget {
+  static String routeName = "login";
   const LoginScreenWithBloc({super.key});
 
   @override
@@ -12,13 +16,17 @@ class LoginScreenWithBloc extends StatefulWidget {
 }
 
 class _LoginScreenWithBlocState extends State<LoginScreenWithBloc> {
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
+      appBar: AppBar(title: Center(child: const Text(
+          AppStrings.loginTitle,
+      )),
+        backgroundColor: Colors.amber,),
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
@@ -38,39 +46,48 @@ class _LoginScreenWithBlocState extends State<LoginScreenWithBloc> {
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                TextField(
-                  controller: emailController,
-                  decoration: const InputDecoration(labelText: "Email"),
-                ),
-                TextField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(labelText: "Password"),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    context.read<LoginBloc>().add(
-                      LoginSubmittedEvent(
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
-                      ),
-                    );
-                  },
-                  child: const Text("Log In"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const SignUpScreenWithBloc()),
-                    );
-                  },
-                  child: const Text("Create an account"),
-                ),
-              ],
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomTextField(
+                    controller: emailController,
+                    labelText: "Email",
+                  ),
+                  SizedBox(height: 20,),
+                  CustomTextField(
+                    controller: passwordController,
+                    labelText: "Password",
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 40),
+                  CustomButton(
+                    text: "Log In",
+                    onPressed: () {
+                      context.read<LoginBloc>().add(
+                        LoginSubmittedEvent(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 20,),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const SignUpScreenWithBloc()),
+                      );
+                    },
+                    child: const Text("Create an account",
+                      style: TextStyle(
+                          color: Colors.black,
+                        fontSize: 15
+                      ),),
+                  ),
+                ],
+              ),
             ),
           );
         },
